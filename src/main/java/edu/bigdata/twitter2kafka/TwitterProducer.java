@@ -154,6 +154,7 @@ public class TwitterProducer implements Runnable {
         }
     }
 
+    @Override
     public void run() {
         try {
             // get Twitter bareerToken
@@ -179,9 +180,11 @@ public class TwitterProducer implements Runnable {
                         if (tweetId > lastId) {
                             lastId = tweetId;
                         }
+                        String key = String.valueOf(tweetId);
                         String msg = tweet.toString();
+
                         // LOGGER.info(msg);
-                        producer.send(new ProducerRecord<>(KAFKA_TOPIC, null, msg), new Callback() {
+                        producer.send(new ProducerRecord<>(KAFKA_TOPIC, key, msg), new Callback() {
                             @Override
                             public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                                 if (e != null) {
